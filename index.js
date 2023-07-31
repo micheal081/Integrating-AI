@@ -9,17 +9,32 @@ const config = new Configuration({
 
 const openai = new OpenAIApi(config);
 
+const format = `
+    Return response in the following parsable JSON format:
+    {
+        "Q": "question",
+        "A": "answer",
+    }
+`;
+
 const runPrompt = async () => {
-  const prompt = "Tell me a joke about Backend developers";
+  const prompt = `
+    Tell me a joke about Backend developers.
+    ${format}
+  `;
 
   const response = await openai.createCompletion({
     model: "text-davinci-003",
     prompt: prompt,
     max_tokens: 3000,
-    temperature: 1,
+    temperature: 0.5,
   });
 
-  console.log(response.data);
+  const parsableJSONResponse = response.data.choices[0].text;
+  const parsedResponse = JSON.parse(parsableJSONResponse);
+
+  console.log("Question: ", parsedResponse.Q);
+  console.log("Answer: ", parsedResponse.A);
 };
 
 runPrompt();
