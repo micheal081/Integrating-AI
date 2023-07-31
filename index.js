@@ -13,9 +13,13 @@ const runPrompt = async () => {
   const prompt = "Tell me a joke about Backend developers";
 
   const response = await openai.createCompletion({
-    model: "gpt-3.5-turbo-0613",
+    model: "text-davinci-003",
     prompt: prompt,
-    max_tokens: 2048,
-    temperature: 0.5,
+    max_tokens: 3000,
+    temperature: 1,
   });
+
+  console.log(response.data);
 };
+
+runPrompt();
